@@ -1,0 +1,35 @@
+<div id="app">
+
+    <h1>要做的事情Todo</h1>
+    <input type="text" v-bind:value='thing' v-on:input="thing = $event.target.value">
+    <!-- 参数的传递问题 -->
+    <button v-on:click="addItem">新增</button>
+
+    <ol>
+        <template v-for="item in items">
+            <li >{{item}}</li> 
+            <button v-on:click="removeItem">删除</button>
+        </template>
+
+    </ol>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<script>
+    const vm = new Vue({
+        el: '#app',
+        data: {
+            thing: '',
+            test: 'hello world',
+            show: true,
+            items: [1, 2]
+        },
+        methods: {
+            addItem: function() {
+                console.log("you are click to add item")
+                this.items.push
+            }
+        }
+    })
+</script>
