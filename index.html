@@ -1,14 +1,18 @@
 <div id="app">
+    <this-is-test hello="'ddddd'">
+        jijij
 
+    </this-is-test>
+    <input type="text" data-date-picker="activated">
     <h1>要做的事情Todo</h1>
     <input type="text" v-bind:value='thing' v-on:input="thing = $event.target.value">
     <!-- 参数的传递问题 -->
     <button v-on:click="addItem">新增</button>
 
     <ol>
-        <template v-for="item in items">
+        <template v-for="(item, index) in items">
             <li >{{item}}</li> 
-            <button v-on:click="removeItem">删除</button>
+            <button v-on:click="removeItem(index)">删除</button>
         </template>
 
     </ol>
@@ -17,6 +21,62 @@
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
 <script>
+    Vue.component('my-component', {
+        props: {
+            // 基础的类型检查 (`null` 和 `undefined` 会通过任何类型验证)
+            propA: Number,
+            // 多个可能的类型
+            propB: [String, Number],
+            // 必填的字符串
+            propC: {
+                type: String,
+                required: true
+            },
+            // 带有默认值的数字
+            propD: {
+                type: Number,
+                default: 100
+            },
+            // 带有默认值的对象
+            propE: {
+                type: Object,
+                // 对象或数组默认值必须从一个工厂函数获取
+                default: function() {
+                    return {
+                        message: 'hello'
+                    }
+                }
+            },
+            // 自定义验证函数
+            propF: {
+                validator: function(value) {
+                    // 这个值必须匹配下列字符串中的一个
+                    return ['success', 'warning', 'danger'].indexOf(value) !== -1
+                }
+            }
+        }
+    })
+
+    // 练习一些局部注册组件
+    var ComponentA = {
+        data: function() {
+            return {
+                hello: 'helo'
+            }
+        },
+        template: `<div class="container">
+  <header>
+    <slot name="header"></slot>
+  </header>
+  <main>
+    <slot></slot>
+  </main>
+  <footer>
+    <slot name="footer"></slot>
+  </footer>
+</div>`
+
+    }
     const vm = new Vue({
         el: '#app',
         data: {
@@ -25,10 +85,18 @@
             show: true,
             items: [1, 2]
         },
+        components: {
+            'this-is-test': ComponentA
+        },
         methods: {
             addItem: function() {
+
                 console.log("you are click to add item")
-                this.items.push
+                this.items.push(this.thing)
+            },
+            removeItem: function(index) {
+                console.log("you are deleting this item")
+                this.items.splice(index, 1)
             }
         }
     })
